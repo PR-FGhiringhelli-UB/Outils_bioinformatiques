@@ -1,0 +1,14 @@
+## singularity containers ##
+*.sif
+
+## compressed data files ##
+*.tar.gz
+*.gz
+*.zip
+*.tar.bz2
+*.tar.bz
+
+## heavy files ##
+*.fasta
+*.bam
+*.vcf

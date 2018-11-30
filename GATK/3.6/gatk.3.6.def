@@ -1,0 +1,44 @@
+#!/bin/bash
+Bootstrap: docker
+From: phusion/baseimage:0.10.2
+
+
+%label
+
+	MAINTAINER Hugo Mananet
+
+
+%environment
+
+	JAVA_LIBRARY_PATH=/usr/lib/jni
+	JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+	export JAVA_LIBRARY_PATH JAVA_HOME
+	
+	gatk=/opt/GenomeAnalysisTK.jar
+	export gatk
+	
+
+%files
+	GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2 /opt/GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
+	
+	
+%post
+
+	apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y build-essential \
+	wget \
+	openjdk-8-jdk \
+	software-properties-common 
+
+	# wget -P /opt/ https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209
+	
+	cd /opt/ && tar xfvj GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
+
+	rm /opt/GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
+	
+	chmod 755 /opt/GenomeAnalysisTK.jar
+
+%runscript
+
+	exec java -jar /opt/GenomeAnalysisTK.jar "$@"

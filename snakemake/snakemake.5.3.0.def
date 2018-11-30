@@ -1,0 +1,42 @@
+#!/bin/bash
+Bootstrap: docker
+From: phusion/baseimage:0.11
+
+
+%label
+
+	MAINTAINER Hugo Mananet
+
+
+%environment
+
+    export PATH="/opt/miniconda/bin:$PATH"
+
+%post
+
+
+
+    apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y build-essential \
+    python3 \
+    wget 
+
+
+    wget -P /opt/ https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash /opt/Miniconda3-latest-Linux-x86_64.sh -b -p /opt/miniconda
+    export PATH="/opt/miniconda/bin:$PATH"
+
+    wget -P /opt/ http://pyyaml.org/download/pyyaml/PyYAML-3.13.tar.gz
+    cd /opt/ && tar -xzvf PyYAML-3.13.tar.gz
+    rm /opt/PyYAML-3.13.tar.gz
+    python /opt/PyYAML-3.13/setup.py install
+
+    conda install -c anaconda pycosat 
+
+    conda install -c conda-forge requests
+
+    
+   
+    conda install -c bioconda -c conda-forge snakemake
+

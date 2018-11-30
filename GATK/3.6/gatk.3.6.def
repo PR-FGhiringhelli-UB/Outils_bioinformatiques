@@ -39,6 +39,7 @@ From: phusion/baseimage:0.10.2
 	
 	chmod 755 /opt/GenomeAnalysisTK.jar
 
+
 %runscript
 
 	exec java -jar /opt/GenomeAnalysisTK.jar "$@"

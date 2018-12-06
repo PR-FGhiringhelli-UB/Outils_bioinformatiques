@@ -1,3 +1,3 @@
 # Bioinformatics-tools
 
-Repository for all bioinformatics tools used at CGFL-PTBC
+Repository for bioinformatics tools

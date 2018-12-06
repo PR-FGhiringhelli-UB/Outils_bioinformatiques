@@ -29,6 +29,13 @@ From: phusion/baseimage:0.10.2
 
 %post
 
+
+	mkdir /soft
+	mkdir /work
+	mkdir /user1
+	mkdir /user2
+	mkdir /tmp3
+
 	echo "\n\n######## Installing utilities needed by GATK 4.0.11.0 ########\n\n"
 	apt-get update && \
 	apt-get upgrade -y && \

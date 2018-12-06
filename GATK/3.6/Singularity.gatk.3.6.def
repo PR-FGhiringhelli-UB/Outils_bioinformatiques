@@ -24,6 +24,7 @@ From: phusion/baseimage:0.10.2
 	
 %post
 
+
 	mkdir /soft
 	mkdir /work
 	mkdir /user1
@@ -37,14 +38,13 @@ From: phusion/baseimage:0.10.2
 	openjdk-8-jdk \
 	software-properties-common 
 
-	# wget -P /opt/ https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209
+	# wget -P /opt/ http://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209
 	
 	cd /opt/ && tar xfvj GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
 
 	rm /opt/GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
 	
 	chmod 755 /opt/GenomeAnalysisTK.jar
-
 
 %runscript
 

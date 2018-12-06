@@ -1,0 +1,12 @@
+*.simg
+*.zip
+*.tar.bz2
+*.sif
+*.tar.gz
+*.gz
+*.fasta
+*.fa
+*.bam
+*.vcf
+4.0.10.0/gatk-4.0.10.0.zip
+gatk-4.0.10.0.zip

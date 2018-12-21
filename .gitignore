@@ -1,5 +1,6 @@
 ## singularity containers ##
 *.sif
+*.simg
 
 ## compressed data files ##
 *.tar.gz

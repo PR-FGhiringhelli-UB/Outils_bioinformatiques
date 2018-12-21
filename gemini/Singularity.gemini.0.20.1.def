@@ -9,12 +9,13 @@ From: phusion/baseimage:0.10.2
 
 %post
 
+
     mkdir /soft
 	mkdir /work
 	mkdir /user1
 	mkdir /user2
 	mkdir /tmp3
-
+    
     add-apt-repository ppa:deadsnakes/ppa
     apt-get update && \
 	apt-get upgrade -y && \
@@ -24,13 +25,17 @@ From: phusion/baseimage:0.10.2
     git \
     gcc \
     zlib1g-dev \
-    wget 
+    wget \
+    tabix
 
     wget https://raw.github.com/arq5x/gemini/master/gemini/scripts/gemini_install.py
 
     python2.7 gemini_install.py /usr/local /usr/local/share/gemini
     export PATH=$PATH:/usr/local/gemini/bin
 
+    wget -P /opt/ https://github.com/arq5x/grabix/archive/0.1.6.tar.gz
+    cd /opt && tar -xzvf 0.1.6.tar.gz
+    cd /opt/grabix-0.1.6 && make
 
 %runscript
 

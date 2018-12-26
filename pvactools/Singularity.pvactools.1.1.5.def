@@ -1,0 +1,84 @@
+#!/bin/bash
+
+
+Bootstrap: docker
+
+From: phusion/baseimage:0.10.2
+
+
+%label
+
+	MAINTAINER Hugo Mananet
+	
+	
+	
+%post
+
+	mkdir /soft
+	mkdir /work
+	mkdir /user1
+	mkdir /user2
+	mkdir /tmp3
+	
+	apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y build-essential \
+	wget \
+    aria2 \
+    python3 \
+    python3-pip \
+    tcsh \
+    gawk 
+
+    MHCFLURRY_DOWNLOADS_CURRENT_RELEASE=1.2.0
+    MHCFLURRY_DATA_DIR=/opt/mhcflurry_data
+    export MHCFLURRY_DATA_DIR MHCFLURRY_DOWNLOADS_CURRENT_RELEASE
+
+    
+
+    aria2c -m 20 -x 16 -s 16 https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+	bash -f Miniconda3-latest-Linux-x86_64.sh -b -p /opt/miniconda
+    rm Miniconda3-latest-Linux-x86_64.sh
+
+	PATH=/opt/miniconda/envs/pvactools_py27/bin:/opt/miniconda/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+	export PATH
+	ln -s /opt/miniconda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+
+    echo "name: pvactools_py27\ndependencies:\n - python=2.7" > environement.yml
+    conda env create --name pvactools_py27 -f environement.yml
+
+    mkdir /opt/iedb
+    wget -P /opt/iedb/ https://downloads.iedb.org/tools/mhci/2.19.1/IEDB_MHC_I-2.19.1.tar.gz
+    cd /opt/iedb/ && tar -xzvf IEDB_MHC_I-2.19.1.tar.gz
+    cd /opt/iedb/mhc_i/ && bash -c "source activate pvactools_py27 && ./configure"
+    rm /opt/iedb/IEDB_MHC_I-2.19.1.tar.gz
+
+    wget -P /opt/iedb/ https://downloads.iedb.org/tools/mhcii/2.17.5/IEDB_MHC_II-2.17.5.tar.gz
+    cd /opt/iedb/ && tar -xzvf IEDB_MHC_II-2.17.5.tar.gz
+    cd /opt/iedb/mhc_ii && bash -c "source activate pvactools_py27 && /opt/miniconda/envs/pvactools_py27/bin/python2.7 ./configure.py"
+    rm /opt/iedb/IEDB_MHC_II-2.17.5.tar.gz
+
+    mkdir /opt/mhcflurry_data
+    # pip3 install --upgrade --user --upgrade pip
+    pip3 install pvactools==1.1.5
+
+    ### To work with older graphics settings ###
+    pip3 uninstall tensorflow -y
+    pip3 install tensorflow==1.5
+    ############################################
+    
+    mhcflurry-downloads fetch
+
+%environment
+
+    PATH=/opt/miniconda/envs/pvactools_py27/bin:/opt/miniconda/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+	export PATH
+	# . /opt/miniconda/etc/profile.d/conda.sh
+
+    MHCFLURRY_DOWNLOADS_CURRENT_RELEASE=1.2.0
+    MHCFLURRY_DATA_DIR=/opt/mhcflurry_data
+    export MHCFLURRY_DATA_DIR MHCFLURRY_DOWNLOADS_CURRENT_RELEASE
+
+%runscript
+
+    exec pvacseq "$@"

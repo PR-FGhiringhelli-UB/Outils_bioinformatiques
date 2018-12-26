@@ -1,0 +1,11 @@
+*.simg
+*.sif
+*.fasta
+*.bam
+*.bai
+*.sam
+*.vcf
+*.gz
+*.tar
+*.bz2
+*.old
